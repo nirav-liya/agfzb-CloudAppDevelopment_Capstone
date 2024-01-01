@@ -120,7 +120,7 @@ def get_dealer_details(request, dealer_id):
 def add_review(request, dealer_id):
     if(request.method == "GET"):
         context = {}
-        dealer_url = "https://lewistolonen-3000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
+        dealer_url = "https://niravliya-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
         dealerships = get_dealers_from_cf(dealer_url, id=dealer_id)
         car_models = CarModel.objects.filter(dealer_id=dealer_id)
         context['cars'] = car_models
@@ -129,11 +129,11 @@ def add_review(request, dealer_id):
         return render(request, 'djangoapp/add_review.html', context)
     elif(request.method=="POST"):
         if(request.user.is_authenticated):
-            url = "https://lewistolonen-5000.theiadockernext-1-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
+            url = "https://niravliya-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
             review = dict()
             review["id"] = 1
             review["dealership"] = dealer_id
-            review["name"] = request.POST.get('content')
+            review["name"] = f"{request.user.first_name} {request.user.last_name}"
             review["review"] = request.POST.get('content')
             review["purchase"] = request.POST.get('purchasecheck') == "on"
             review["purchase_date"] = request.POST.get('purchasedate')
