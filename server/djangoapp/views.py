@@ -125,7 +125,7 @@ def add_review(request, dealer_id):
         context = {}
         dealer_url = "https://niravliya-3000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/dealerships/get"
         dealerships = get_dealers_from_cf(dealer_url, id=dealer_id)
-        car_models = CarModel.objects.filter(dealer_id=dealer_id)
+        car_models = CarModel.objects.all()
         context['cars'] = car_models
         context['dealership'] = dealerships[0]
         context['dealer_id'] = dealer_id
@@ -134,7 +134,7 @@ def add_review(request, dealer_id):
         if(request.user.is_authenticated):
             url = "https://niravliya-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
             review = dict()
-            review["id"] = 1
+            
             review["dealership"] = dealer_id
             review["name"] = f"{request.user.first_name} {request.user.last_name}"
             review["review"] = request.POST.get('content')
@@ -142,7 +142,7 @@ def add_review(request, dealer_id):
             review["purchase_date"] = request.POST.get('purchasedate')
             car_models = CarModel.objects.filter(id=request.POST.get('car'))
             car_model = car_models[0]
-            review["car_make"] = car_model.make.name
+            review["car_make"] = car_model.car_make.name
             review["car_model"] = car_model.name
             review["car_year"] = str(car_model.year)[0:4]
             print(review)
