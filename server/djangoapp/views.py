@@ -10,6 +10,7 @@ from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_requ
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
+import time
 import logging
 import json
 
@@ -134,9 +135,9 @@ def add_review(request, dealer_id):
         if(request.user.is_authenticated):
             url = "https://niravliya-5000.theiadockernext-0-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/api/post_review"
             review = dict()
-            
+            review["id"]=time.time()
             review["dealership"] = dealer_id
-            review["name"] = f"{request.user.first_name} {request.user.last_name}"
+            review["name"] = request.user.username
             review["review"] = request.POST.get('content')
             review["purchase"] = request.POST.get('purchasecheck') == "on"
             review["purchase_date"] = request.POST.get('purchasedate')
